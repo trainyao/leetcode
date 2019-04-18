@@ -1,126 +1,85 @@
 package main
 
 import (
-	"errors"
 	"log"
+	"strings"
 )
 
 const point = '.'
 const star = '*'
-const specialChar = "*."
 
 func main() {
-	s := "mississippi"
-	p := "mis*is*p*."
+	//s := "aa"
+	//p := "a*"
 
-	result, err := isMatch(s, p)
-	if err != nil {
-		result = false
-	}
+	//s := "ab"
+	//p := ".*"
+
+	s := "aaa"
+	p := "ab*a*c*a"
+
+	//s := "a"
+	//p := "ab*"
+
+	//s := "aab"
+	//p := "d*c*a*b"
+	//
+	//s := "mississippi"
+	//p := "mis*is*p*."
+
+	result := isMatch(s, p)
 	log.Printf("result shoule be false , %b", result)
 }
 
-func isMatch(s string, p string) (bool, error) {
+func isMatch(s string, p string) bool {
 	// 是否已经处理完毕
 	if len(s) == 0 && len(p) == 0 {
-		log.Printf("matching finished, and match")
-		return true, nil
+		return true
 	} else if len(s) == 0 {
-		log.Printf("matching finished, and not match")
-		return false, nil
-	} else if len(p) == 0 {
-		log.Printf("matching finished, and not match")
-		return false, nil
-	}
-
-	if len(p) >= 2 {
-		if (p[0] == star || p[0] == point) && (p[1] == star || p[1] == point) {
-			log.Printf("invalid regex format")
-			return false, errors.New("invalid regex format " + p)
+		// 后尾的字符是*,而且已经将字符串匹配完了
+		starIndex := strings.Index(p, string(star))
+		if starIndex == len(p)-1 {
+			return true
 		}
+		return false
+	} else if len(p) == 0 {
+		return false
 	}
 
 	log.Printf("matching %s with %s", s, p)
-	var result bool = false
-	defer log.Printf("", result)
 
-	for _, regexChar := range p {
+	for index, regexChar := range p {
 		// 如果是点,吃一个
 		if regexChar == point {
-			result, err := isMatch(s[1:len(s)], p[1:len(p)])
-			if err != nil {
-				return false, err
+			// 如果存在下一个字符,并且下一个字符是*,直接吃掉一个匹配的字符
+			if index+1 <= len(p)-1 && p[index+1] == star {
+				return isMatch(s[1:], p)
 			}
-			return result, nil
+			return isMatch(s[1:], p[1:])
 		}
 
-		// 如果是星 循环吃
 		if regexChar == star {
-			restRegex := p[1:len(p)]
-
-			// 尝试不跳,直接吃掉一个regex的char来匹配
-			result, err := isMatch(s, restRegex)
-			if err != nil {
-				return false, err
-			}
-			if result {
-				result = true
-				return true, nil
-			}
-
-			for stringIndex, _ := range s {
-				result, err := isMatch(s[stringIndex+1:len(s)], p[1:len(p)])
-				if err != nil {
-					return false, err
-				}
-				if result {
-					return true, nil
-				}
-			}
-
-			result = false
-			return false, nil
+			return false
 		}
 
-		// 剩下的做字符的匹配
-		asciiSubStringIndex := findNextAsciiSubString(p)
-		if asciiSubStringIndex < 0 {
-			log.Printf("impossible, first index is not ascii and pass first two if")
-			result = false
-			return false, nil
-		}
-
-		// 匹配ascii字符串, 继续匹配后续的字符串
-		if asciiSubStringIndex > len(s) {
-			return false, nil
-		}
-		if p[:asciiSubStringIndex] == s[:asciiSubStringIndex] {
-			result, err := isMatch(s[asciiSubStringIndex:], p[asciiSubStringIndex:])
-			if err != nil {
-				return false, err
+		// 查找星
+		starIndex := strings.IndexAny(p, string(star))
+		if starIndex >= 0 {
+			// 星前面的字符长度大于可以匹配的长度
+			if len(s) < starIndex {
+				return false
 			}
 
-			return result, nil
+			if s[:starIndex] == p[:starIndex] {
+				return isMatch(s[starIndex:], p)
+			} else {
+				// 星前面的文字不匹配,继续匹配星之后的正则表达式
+				return isMatch(s, p[starIndex+1:])
+			}
 		}
 
-		result = false
-		return false, nil
+		return s == p
 	}
 
-	result = false
-	return false, nil
-}
-
-func findNextAsciiSubString(str string) int {
-	if len(str) == 0 {
-		return -1
-	}
-
-	for index, char := range str {
-		if char == point || char == star {
-			return index
-		}
-	}
-
-	return len(str)
+	return false
 }
