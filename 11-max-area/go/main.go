@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	log.Printf("result is %d", maxArea([]int{1, 8, 6, 2, 5, 4, 8, 3, 7}))
+	log.Printf("result is %d", maxArea([]int{1,2,3,4,5}))
 }
 
 func maxArea(height []int) int {
@@ -13,32 +13,25 @@ func maxArea(height []int) int {
 		return 0
 	}
 
+	var left int = 0
+	var right int = len(height) - 1
 	var max int = 0
 
-	for index, _ := range height {
-		if result := maxAreaForOneRound(height[index:]); result > max {
-			max = result
+	for left < right {
+		var minLength = 0
+		var distance = right - left
+		if height[left] < height[right] {
+			minLength = height[left]
+			left += 1
+		} else {
+			minLength = height[right]
+			right -= 1
+		}
+		var area int = minLength * distance
+		if area > max {
+			max = area
 		}
 	}
 
-	return max
-}
-
-func maxAreaForOneRound(height []int) int {
-	var max int = 0
-
-	for index, _ := range height {
-		if index == 0 {
-			continue
-		}
-
-		var smallerHeight int = height[0]
-		if height[0] > height[index] {
-			smallerHeight = height[index]
-		}
-		if result := smallerHeight * index; result > max {
-			max = result
-		}
-	}
 	return max
 }
