@@ -9,6 +9,8 @@ func main() {
 	log.Printf("%a", res)
 	res, _ = quickSort([]int{1, 2, 1, 1})
 	log.Printf("%a", res)
+	res, _ = quickSort([]int{89, 34, 32, 2, 433, 44, 22, 99, 4324, 43, 23, 23, 43333, 6, 1})
+	log.Printf("%a", res)
 	res, _ = quickSort([]int{5, 1, 8, 9, 10, 4, 3, 2, 2, 1})
 	log.Printf("%a", res)
 	res, _ = quickSort([]int{1, 1, 1})
@@ -48,12 +50,12 @@ func quickSort(a []int) ([]int, error) {
 		}
 	}
 
-	// 迭代前面部分
+	// 递归前面部分
 	_, err := quickSort(a[:benchmarkValueIndex])
 	if err != nil {
 		return a, err
 	}
-	// 迭代后面部分
+	// 递归后面部分
 	if benchmarkValueIndex+1 < len(a) {
 		_, err := quickSort(a[benchmarkValueIndex+1:])
 		if err != nil {
