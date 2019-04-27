@@ -7,7 +7,17 @@ import (
 func main() {
 	res, _ := quickSort([]int{2, 1, 1, 1})
 	log.Printf("%a", res)
+	res, _ = quickSort([]int{1, 2})
+	log.Printf("%a", res)
+	res, _ = quickSort([]int{2, 1})
+	log.Printf("%a", res)
 	res, _ = quickSort([]int{1, 2, 1, 1})
+	log.Printf("%a", res)
+	res, _ = quickSort([]int{2, 1, 7, 3})
+	log.Printf("%a", res)
+	res, _ = quickSort([]int{1, 1, 7, 3})
+	log.Printf("%a", res)
+	res, _ = quickSort([]int{1, 2, 3, 4})
 	log.Printf("%a", res)
 	res, _ = quickSort([]int{89, 34, 32, 2, 433, 44, 22, 99, 4324, 43, 23, 23, 43333, 6, 1})
 	log.Printf("%a", res)
@@ -23,6 +33,10 @@ func main() {
 
 func quickSort(a []int) ([]int, error) {
 	if len(a) <= 1 {
+		return a, nil
+	}
+	if len(a) == 2 && a[0] > a[1] {
+		a[0], a[1] = a[1], a[0]
 		return a, nil
 	}
 
