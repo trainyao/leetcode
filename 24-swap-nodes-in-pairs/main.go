@@ -5,23 +5,23 @@ import "log"
 func main() {
 	head := &ListNode{
 		Val: 1,
-		//Next: nil,
-		Next: &ListNode{
-			Val: 2,
-			//Next: nil,
-			Next: &ListNode{
-				Val:  3,
-				//Next: nil,
-				Next: &ListNode{
-					Val:  4,
-					Next: nil,
-					//Next: &ListNode{
-					//	Val:  5,
-					//	Next: nil,
-					//},
-				},
-			},
-		},
+		Next: nil,
+		//Next: &ListNode{
+		//	Val: 2,
+		//	Next: nil,
+		//	//Next: &ListNode{
+		//	//	Val:  3,
+		//	//	Next: nil,
+		//	//	//Next: &ListNode{
+		//	//	//	Val:  4,
+		//	//	//	Next: nil,
+		//	//	//	//Next: &ListNode{
+		//	//	//	//	Val:  5,
+		//	//	//	//	Next: nil,
+		//	//	//	//},
+		//	//	//},
+		//	//},
+		//},
 	}
 
 	head = swapPairs(head)
@@ -76,61 +76,26 @@ func swapPairs(head *ListNode) *ListNode {
 	for true {
 		pnext := pcurrent.Next
 
-		// log
-		log[counter] = pcurrent
+		log[counter]=pcurrent
 
-		// my next
-		wantIndex := 0
-		if counter%2 == 1 {
-			wantIndex = counter + 3
-		} else {
-			wantIndex = counter - 1
-			if wantIndex <= 0 {
-				wantIndex = 0
+		if counter % 2 == 1{
+			index := counter - 2
+			if index <= 0 {
+				index = 0
 			}
-		}
-		if p, ok := log[wantIndex]; ok {
-			log[counter].Next = p
-		}
 
-		// me be wanted
-		wantedIndex := 0
-		if counter%2 == 1 {
-			wantedIndex = counter + 1
+			log[index].Next = pcurrent.Next
+
 			if pnext == nil {
-				wantedIndex = counter - 2
-				//if wantedIndex <= 0 {
-				//	wantedIndex = 0
-				//}
+				log[index].Next = pcurrent
 			}
 		} else {
-			wantedIndex = counter - 3
-			if wantedIndex <= 0 {
-				wantedIndex = 0
-			}
-		}
-		if p, ok := log[wantedIndex]; ok {
-			p.Next = pcurrent
-		}
+			index := counter - 1
+			log[counter].Next = log[index]
 
-		// handle next
-		nextIndex := 0
-		if counter%2 == 1 {
-			nextIndex = counter - 2
-			if nextIndex <= 0 {
-				nextIndex = 0
-			}
 			if pnext == nil {
-				nextIndex = 99999
+				log[index].Next = nil
 			}
-		} else {
-			nextIndex = counter + 2
-			if pnext == nil {
-				nextIndex = counter - 1
-			}
-		}
-		if p, ok := log[nextIndex]; ok {
-			p.Next = pnext
 		}
 
 		if pnext == nil {
@@ -140,7 +105,6 @@ func swapPairs(head *ListNode) *ListNode {
 			counter++
 		}
 	}
-
 
 	return log[0].Next
 }
