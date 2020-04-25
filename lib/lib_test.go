@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"fmt"
@@ -6,20 +6,20 @@ import (
 )
 
 func Test_stack(t *testing.T) {
-	s := stack{}
-	s.push(1)
-	s.push(2)
-	s.push(3)
+	s := Stack{}
+	s.Push(1)
+	s.Push(2)
+	s.Push(3)
 
-	i, err := s.pop()
+	i, err := s.Pop()
 	if err != nil {
 		t.Fatal(err)
 	}
-	j, err := s.pop()
+	j, err := s.Pop()
 	if err != nil {
 		t.Fatal(err)
 	}
-	k, err := s.pop()
+	k, err := s.Pop()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,7 +30,7 @@ func Test_stack(t *testing.T) {
 		t.FailNow()
 	}
 
-	_, err = s.pop()
+	_, err = s.Pop()
 	if err == nil {
 		t.Fatal("err should not be empty")
 	}
