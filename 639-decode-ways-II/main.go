@@ -13,15 +13,21 @@ func main() {
 	//r = numDecodings("9*")
 	//print(r)
 
-	r := numDecodings("1*1")
+	r := numDecodings("*********")
+	/*
+	"*********"
+	Output:
+	1291868919
+	Expected:
+	291868912
+
+	*/
 	print(r)
 }
 
-func numDecodings(s string) int {
-	if len(s) == 0 {
-		return 1
-	}
+const M = 1000000007
 
+func numDecodings(s string) int {
 	l := make([]int, len(s)+1)
 	l[0] = 1
 	otn := map[int]struct{}{
@@ -46,7 +52,7 @@ func numDecodings(s string) int {
 	}
 
 	if s[0] == '0' {
-		l[1] = 1
+		l[1] = 0
 	}
 	if s[0] == '*' {
 		l[1] = 9
@@ -61,13 +67,13 @@ func numDecodings(s string) int {
 		c := s[counter]
 		cb := s[counter-1]
 		if c == '0' {
-			l[n] = l[n-1]
+			l[n] = 0
 
 			if cb == '1' || cb == '2' {
 				l[n] += l[n-2]
 			}
 			if cb == '*' {
-				l[n] += 2 * l[n-2]
+				l[n] += (2 * l[n-2]) % M
 			}
 		}
 
@@ -83,28 +89,27 @@ func numDecodings(s string) int {
 
 			// 2n[n-2] (s[n-1] = * and s[n] = [1-6])
 			if isOneToSix && cb == '*' {
-				l[n] += 2 * l[n-2]
+				l[n] += (2 * l[n-2]) % M
 			}
-
 		}
 
 		// 9n[n-1] +
 		if c == '*' {
-			l[n] = 9 * l[n-1]
+			l[n] = (9 * l[n-1]) % M
 
 			// 9n[n-2](s[n-1] = 1) 6n[n-2](s[n-1] = 2) 15n[n-2](s[n-1] = *)
 			if cb == '1' {
-				l[n] += 9 * l[n-2]
+				l[n] += (9 * l[n-2]) % M
 			}
 			if cb == '2' {
-				l[n] += 6 * l[n-2]
+				l[n] += (6 * l[n-2]) % M
 			}
 			if cb == '*' {
-				l[n] += 15 * l[n-2]
+				l[n] += (15 * l[n-2]) % M
 			}
 		}
 
-		l[n] = l[n] % (10e9 + 7)
+		l[n] = l[n] % M
 
 		counter++
 		n++
