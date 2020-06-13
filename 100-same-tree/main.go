@@ -1,6 +1,8 @@
 package main
 
-import "github.com/trainyao/leetcode/lib"
+import (
+	stack2 "github.com/trainyao/leetcode/pkg/stack"
+)
 
 func main() {
 	t1 := &TreeNode{
@@ -59,7 +61,7 @@ func getS(t *TreeNode) (r []int) {
 		return r
 	}
 
-	stack := lib.Stack{}
+	stack := stack2.Stack{}
 	var interf interface{}
 	stack.Push(t)
 

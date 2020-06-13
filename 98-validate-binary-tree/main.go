@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/trainyao/leetcode/lib"
+	"github.com/trainyao/leetcode/pkg/stack"
 )
 
 func main() {
@@ -25,7 +25,7 @@ type TreeNode struct {
 func isValidBST(root *TreeNode) bool {
 	inorder := 0
 	init := true
-	s := lib.Stack{}
+	s := stack.Stack{}
 
 	for !s.Empty() || root != nil {
 		for root != nil {

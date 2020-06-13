@@ -1,8 +1,12 @@
-package lib
-
-import "fmt"
+package stack
 
 type Stack []interface{}
+
+type myerrorr string
+
+func (e myerrorr) Error() string {
+	return string(e)
+}
 
 func (s *Stack) Push(i interface{}) {
 	*s = append(*s, i)
@@ -11,7 +15,7 @@ func (s *Stack) Push(i interface{}) {
 func (s *Stack) Pop() (i interface{}, err error) {
 	l := len(*s)
 	if l == 0 {
-		return 0, fmt.Errorf("Stack empty")
+		return 0, myerrorr("stack empty")
 	}
 
 	i = (*s)[l-1]
