@@ -1,12 +1,10 @@
 package stack
 
+import "errors"
+
 type Stack []interface{}
 
-type myerrorr string
-
-func (e myerrorr) Error() string {
-	return string(e)
-}
+var StarkEmpty = errors.New("stack empty")
 
 func (s *Stack) Push(i interface{}) {
 	*s = append(*s, i)
@@ -15,7 +13,7 @@ func (s *Stack) Push(i interface{}) {
 func (s *Stack) Pop() (i interface{}, err error) {
 	l := len(*s)
 	if l == 0 {
-		return 0, myerrorr("stack empty")
+		return 0, StarkEmpty
 	}
 
 	i = (*s)[l-1]
