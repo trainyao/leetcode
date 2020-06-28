@@ -8,30 +8,36 @@ func main() {
 
 func gardenNoAdj(N int, paths [][]int) []int {
 	q := queue.NewQueue()
-	pathMapped := map[int][][]int{}
+	pointConnected := make([][]bool, N)
 
-	// use paths's from point to map paths
 	for i := 0; i < len(paths); i++ {
-		from := paths[i][0]
-		if p, ok := pathMapped[from]; !ok {
-			pathMapped[from] = make([][]int, 0)
+		fromIndex := paths[i][0] - 1
+		toIndex := paths[i][1] - 1
+
+		if pointConnected[fromIndex] == nil {
+			pointConnected[fromIndex] = make([]bool, N)
 		} else {
-			pathMapped[from] = append(p, paths[i])
+			pointConnected[fromIndex][toIndex] = true
+		}
+
+		if pointConnected[toIndex] == nil {
+			pointConnected[toIndex] = make([]bool, N)
+		} else {
+			pointConnected[toIndex][fromIndex] = true
 		}
 	}
 
 	res := make([]int, N)
-	candidate := [][4]bool{}
 
 	q.Enqueue(1)
+	res[0] = 1
 
 	var pointInterf interface{}
 	for pointInterf = q.Equeue(); pointInterf != nil; {
-		point := pointInterf.(int)
+		point := pointInterf.(int) - 1
+		// if 
+		if res[point] != 0 {
 
-		// if has paths, handle it, enqueue destinations
-		if c, ok := pathMapped[point]; ok {
-			
 
 		}
 	}
