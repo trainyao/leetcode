@@ -2,11 +2,15 @@ package queue
 
 type Queue []interface{}
 
+func NewQueue() *Queue {
+	return &Queue{}
+}
+
 func (q *Queue) Enqueue(v interface{}) {
 	*q = append(*q, v)
 }
 
-func (q *Queue) Equeue()(v interface{}) {
+func (q *Queue) Equeue() (v interface{}) {
 	if len(*q) == 0 {
 		return nil
 	}
@@ -16,7 +20,7 @@ func (q *Queue) Equeue()(v interface{}) {
 	return
 }
 
-func (q *Queue) len () int {
+func (q *Queue) len() int {
 	return len(*q)
 }
 
